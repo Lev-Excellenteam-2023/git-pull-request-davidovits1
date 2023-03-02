@@ -1,0 +1,1 @@
+data = open('resources/logo.jpg', 'rb')
