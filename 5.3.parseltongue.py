@@ -1,23 +1,35 @@
-def parseltongue():
+# David Ovits
+# exercise 5.3 parseltongue
+
+FILE_NAME = 'resources/logo.jpg'
+
+
+def parseltongue(file_name):
+    """
+    Gets the name of a file and returns words found there if there is a sequence
+     of 5 or more lowercase letters and an exclamation mark at the end
+    :param file_name: name of file
+    :return: Secret messages from the file name
+    """
     count = 0
+    data = open(file_name, 'rb')
     word = ''
-    data = open('resources/logo.jpg', 'rb')
+    while True:
+        chr_byte = data.read(1)
+        if not chr_byte:
+            break
+        if chr_byte.isalpha():
+            word += chr_byte.decode()
+            count += 1
+        elif chr_byte == b'!'and count >= 5:
+            yield word
+            word = ''
+            count = 0
+        else:
+            word = ''
+            count = 0
 
-    for i in data:
-        for j in i:
-            if 97 <= j <= 121 or j == 32:
-                count += 1
-                word += chr(j)
-            else:
-                count = 0
-                word = ''
-            if count >= 5 and chr(j) == '!':
-                count = 0
-                word += chr(j)
-                yield word
-                word = ''
 
-
-our_generator = parseltongue()
+our_generator = parseltongue(FILE_NAME)
 for item in our_generator:
     print(item)
